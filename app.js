@@ -1,14 +1,4 @@
-// your code here!
-//step 1 get the value form the text area
-//step 2 get convert the input to array
-//do a input.split(' ')
-//separate commas and dots
-//do a array.length of each words
-//get word count
-//get unique word count
-//get average word length
-//
-let strTxt = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna lorem ipsum dolor eiusmod elit magna aliqua.";
+let strTxt = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor eiusmod elit magna aliqua.";
 
 
 let getWords = strRaw => {
@@ -16,7 +6,30 @@ let getWords = strRaw => {
     return strRaw.replace(/[\.,:-]+/g, '').split(' ').sort();
 };
 
+//gets wordFrequencies
+let getWFrequencies = arrWords => {
+    let results = {};
+    for (let i = 0; i <= arrWords.length; i++) {
+        if (arrWords[i] in results) {
+            results[arrWords[i]]++;
+        } else {
+            results[arrWords[i]] = 1;
+        }
+    }
+    return results;
+};
 
+let getDistinctWords = str => {
+    //   for (var i=0; i<words.length; i++) {
+    //     console.log(distinct.indexOf(words[i]) === -1);
+    //     if (distinct.indexOf(words[i]) === -1) {
+    //       distinct.push(words[i]);
+    //     }
+    //   }
+    distinct = new Set(str);
+    console.log(distinct.size);
+    return distinct.size;
+};
 
 let getWordsTotal = str => {
     // console.log(str);
@@ -24,22 +37,13 @@ let getWordsTotal = str => {
     let words = getWords(str);
     let wordAvg = 0;
     let wordCount = words.length;
-    let wordFrequencies = {};
+    let wordFrequencies = getWFrequencies(words);
+    let distinct = getDistinctWords(words);
 
-
-    //get wordFrequencies
-    //console.log(words);
-    for (let i = 0; i <= words.length; i++) {
-        if (words[i] in wordFrequencies) {
-            wordFrequencies[words[i]]++;
-        } else {
-            wordFrequencies[words[i]] = 1;
-        }
-    }
     //console.log(wordFrequencies);
 
-
-
+    //let wordsKey = Object.values(wordFrequencies)[0];
+    //console.log(`wordsKey: ${wordsKey}`);
 
     //get the average word length
     //console.log(wordCount);
@@ -47,13 +51,31 @@ let getWordsTotal = str => {
         wordAvg += words[i].length;
     }
     let avgLen = wordAvg / wordCount;
-    //console.log(avgLen);
+    console.log(avgLen);
 
+    console.log({
+        wordCout: wordCount,
+        uniqueWordCount: distinct,
+        averageWordLength: avgLen,
+    })
 
+    let textReport = $('.js-text-report');
+    textReport.find('.js-word-count').text(wordCount);
+    textReport.find('.js-unique-word-count').text(distinct);
+    textReport.find('.js-average-word-length').text(avgLen + " characters");
+    textReport.removeClass('hidden');
 
-
-    return result;
-
+    //return result;
 };
 
-getWordsTotal(strTxt);
+function analyzeTxt() {
+    $('.js-text-form').submit(function(event) {
+        event.preventDefault();
+        // get the text the user submitted
+        let userText = $(this).find('#user-text').val();
+        //getWordsTotal(strTxt);
+        getWordsTotal(userText);
+    });
+}
+
+$(analyzeTxt());
