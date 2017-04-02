@@ -1,6 +1,5 @@
 let strTxt = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor eiusmod elit magna aliqua.";
 
-
 let getWords = strRaw => {
     //console.log(str.replace(/[\.,:-]+/g, '').split(' '));
     return strRaw.replace(/[\.,:-]+/g, '').split(' ').sort();
@@ -69,10 +68,11 @@ let getWordsTotal = str => {
 };
 
 function analyzeTxt() {
-    $('.js-text-form').submit(function(event) {
+    // $('.js-text-form').submit(function(event) {
+    $('.js-text-form').submit(event => {
         event.preventDefault();
         // get the text the user submitted
-        let userText = $(this).find('#user-text').val();
+        let userText = $(event.currentTarget).find('#user-text').val();
         //getWordsTotal(strTxt);
         getWordsTotal(userText);
     });
